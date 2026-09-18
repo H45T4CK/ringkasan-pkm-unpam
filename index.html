@@ -3,39 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Ringkasan PKM UNPAM 2026/2027</title>
+    <title>Interactive Summarizer PKM UNPAM 2026/2027</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
+        /* ==========================================================================
+           1. CORE THEME & CYBER DARK SYSTEM
+           ========================================================================== */
         :root {
-            --bg-main: #0b0f19;
-            --bg-card: #131b2e;
-            --bg-card-hover: #1a253d;
+            --bg-main: #080c14;
+            --bg-card: rgba(17, 24, 39, 0.75);
+            --bg-card-hover: rgba(31, 41, 55, 0.85);
             --border-soft: rgba(255, 255, 255, 0.08);
+            --border-glow: rgba(6, 182, 212, 0.4);
             
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
+            --text-primary: #f9fafb;
+            --text-secondary: #9ca3af;
+            --text-muted: #6b7280;
             
             --accent-blue: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.15);
             --accent-cyan: #06b6d4;
+            --accent-indigo: #6366f1;
+            --accent-glow: rgba(6, 182, 212, 0.15);
 
-            /* Category Tag Colors */
+            /* Category Colors */
             --cat-dasar: #3b82f6;
             --cat-syarat: #14b8a6;
             --cat-timeline: #f59e0b;
             --cat-alur: #8b5cf6;
             --cat-dokumen: #f97316;
+            --cat-siskerma: #06b6d4;
             --cat-aturan: #ef4444;
             --cat-tanya: #10b981;
 
-            --danger-bg: rgba(239, 68, 68, 0.1);
-            --danger-border: rgba(239, 68, 68, 0.25);
+            --danger-bg: rgba(239, 68, 68, 0.12);
+            --danger-border: rgba(239, 68, 68, 0.3);
             --danger-text: #fca5a5;
         }
 
@@ -47,20 +53,21 @@
 
         body {
             background-color: var(--bg-main);
-            background-image: radial-gradient(circle at 15% 0%, rgba(59, 130, 246, 0.08), transparent 45%);
+            background-image: 
+                radial-gradient(circle at 10% 0%, rgba(59, 130, 246, 0.12), transparent 40%),
+                radial-gradient(circle at 90% 100%, rgba(6, 182, 212, 0.08), transparent 40%);
             color: var(--text-primary);
             font-family: 'Plus Jakarta Sans', sans-serif;
             line-height: 1.6;
             min-height: 100vh;
         }
 
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .mono { font-family: 'JetBrains Mono', monospace; }
 
+        /* Header Bar */
         header {
-            background-color: rgba(11, 15, 25, 0.85);
-            backdrop-filter: blur(16px);
+            background-color: rgba(8, 12, 20, 0.85);
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-soft);
             padding: 16px 32px;
             position: sticky;
@@ -74,32 +81,51 @@
         .header-brand {
             display: flex;
             align-items: center;
+            gap: 14px;
+        }
+
+        .header-brand .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .header-brand .title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+        .header-brand .subtitle { font-size: 0.75rem; color: var(--text-muted); }
+
+        .header-right {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .header-brand .icon { font-size: 1.25rem; }
-        .header-brand .title { font-size: 1.1rem; font-weight: 800; }
-        .header-brand .subtitle { font-size: 0.75rem; color: var(--text-muted); }
-
         .badge-tag {
             background: var(--accent-glow);
-            color: var(--accent-blue);
-            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
         }
 
+        /* Layout Grid */
         .main-container {
             display: grid;
             grid-template-columns: 1.05fr 0.95fr;
             gap: 24px;
             padding: 24px 32px;
-            max-width: 1800px;
+            max-width: 1850px;
             margin: 0 auto;
         }
 
+        /* Left Column: Player Sticky */
         .video-section {
             position: sticky;
             top: 90px;
@@ -110,11 +136,12 @@
         }
 
         .video-card {
-            background-color: var(--bg-card);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border-soft);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
         }
 
         .video-wrapper {
@@ -132,12 +159,12 @@
         }
 
         .video-meta { padding: 20px; }
-        .video-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+        .video-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
         .video-subtitle { font-size: 0.85rem; color: var(--text-secondary); }
 
         .now-playing-bar {
-            margin-top: 12px;
-            padding-top: 12px;
+            margin-top: 14px;
+            padding-top: 14px;
             border-top: 1px solid var(--border-soft);
             display: flex;
             align-items: center;
@@ -161,8 +188,10 @@
             100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
         }
 
+        /* Right Column: Interactive Content */
         .summary-section {
-            background-color: var(--bg-card);
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
             border: 1px solid var(--border-soft);
             border-radius: 20px;
             padding: 24px;
@@ -183,7 +212,7 @@
 
         .view-toggler {
             display: flex;
-            background-color: var(--bg-main);
+            background-color: rgba(0, 0, 0, 0.4);
             padding: 4px;
             border-radius: 12px;
             border: 1px solid var(--border-soft);
@@ -203,7 +232,7 @@
         }
 
         .toggle-btn.active {
-            background-color: var(--accent-blue);
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-indigo));
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
         }
@@ -213,31 +242,21 @@
         .search-box input {
             width: 100%;
             padding: 12px 40px;
-            background-color: var(--bg-main);
+            background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-soft);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 0.875rem;
             outline: none;
+            transition: border-color 0.2s;
         }
 
-        .search-box input:focus { border-color: var(--accent-blue); }
+        .search-box input:focus { border-color: var(--accent-cyan); }
 
         .search-box .search-icon {
             position: absolute; left: 14px; top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
-            pointer-events: none;
-        }
-
-        .search-box .kbd-hint {
-            position: absolute; right: 14px; top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            background: var(--border-soft);
-            padding: 2px 6px;
-            border-radius: 4px;
             pointer-events: none;
         }
 
@@ -256,14 +275,14 @@
             font-size: 0.75rem;
             font-weight: 600;
             color: var(--text-secondary);
-            background: var(--bg-main);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-soft);
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .chip:hover { border-color: var(--accent-blue); color: var(--text-primary); }
-        .chip.active { background: var(--accent-glow); border-color: var(--accent-blue); color: var(--accent-blue); }
+        .chip:hover { border-color: var(--accent-cyan); color: var(--text-primary); }
+        .chip.active { background: var(--accent-glow); border-color: var(--accent-cyan); color: var(--accent-cyan); }
 
         .content-scroll {
             overflow-y: auto;
@@ -276,8 +295,9 @@
         .content-scroll::-webkit-scrollbar { width: 6px; }
         .content-scroll::-webkit-scrollbar-thumb { background-color: var(--border-soft); border-radius: 10px; }
 
+        /* Card System */
         .card {
-            background-color: rgba(255, 255, 255, 0.02);
+            background-color: rgba(255, 255, 255, 0.015);
             border: 1px solid var(--border-soft);
             border-left: 4px solid var(--cat-color, var(--border-soft));
             border-radius: 14px;
@@ -285,13 +305,16 @@
             transition: all 0.25s ease;
         }
 
-        .card:hover { background-color: var(--bg-card-hover); border-color: rgba(255, 255, 255, 0.15); }
+        .card:hover { 
+            background-color: var(--bg-card-hover); 
+            border-color: rgba(255, 255, 255, 0.15); 
+        }
 
         .card.active-playing {
             border-color: var(--accent-cyan) !important;
             border-left-color: var(--accent-cyan) !important;
-            background-color: rgba(6, 182, 212, 0.06);
-            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+            background-color: rgba(6, 182, 212, 0.08);
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.15);
         }
 
         .card-header {
@@ -299,16 +322,48 @@
             justify-content: space-between;
             align-items: center;
             gap: 12px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+        }
+
+        .card-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
 
+        /* Custom Checklist Checkbox */
+        .check-box {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+            border: 2px solid var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .check-box.checked {
+            background-color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .check-box.checked::after {
+            content: "✓";
+            color: #000;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
         .timestamp-btn {
             background: var(--accent-glow);
-            color: var(--accent-blue);
-            border: 1px solid rgba(59, 130, 246, 0.3);
-            padding: 5px 10px;
+            color: var(--accent-cyan);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            padding: 5px 12px;
             border-radius: 8px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -320,11 +375,15 @@
             flex-shrink: 0;
         }
 
-        .timestamp-btn:hover { background-color: var(--accent-blue); color: #ffffff; }
+        .timestamp-btn:hover { 
+            background-color: var(--accent-cyan); 
+            color: #000;
+            box-shadow: 0 2px 10px rgba(6, 182, 212, 0.4); 
+        }
 
         ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
         li { font-size: 0.85rem; color: var(--text-secondary); position: relative; padding-left: 16px; }
-        li::before { content: "•"; position: absolute; left: 0; color: var(--cat-color, var(--accent-blue)); font-weight: bold; }
+        li::before { content: "•"; position: absolute; left: 0; color: var(--cat-color, var(--accent-cyan)); font-weight: bold; }
         li b { color: var(--text-primary); }
 
         .alert-box {
@@ -337,6 +396,19 @@
             margin-top: 10px;
         }
 
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-soft);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 6px;
+            transition: all 0.2s;
+        }
+        .copy-btn:hover { background: var(--accent-blue); color: #fff; }
+
         .highlight-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -345,14 +417,14 @@
         }
 
         .highlight-item {
-            background-color: var(--bg-main);
+            background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-soft);
             padding: 14px;
             border-radius: 12px;
         }
 
         .highlight-item h4 { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
-        .highlight-item p { font-size: 0.95rem; font-weight: 700; color: var(--accent-blue); }
+        .highlight-item p { font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); }
 
         @media (max-width: 1024px) {
             .main-container { grid-template-columns: 1fr; padding: 16px; }
@@ -364,18 +436,23 @@
 </head>
 <body>
 
+    <!-- HEADER BAR -->
     <header>
         <div class="header-brand">
-            <span class="icon">📌</span>
+            <div class="logo-icon">📌</div>
             <div>
                 <div class="title">Summarizer PKM TI UNPAM</div>
-                <div class="subtitle">Dashboard Rangkuman Video Sosialisasi Interactive</div>
+                <div class="subtitle">Interactive Live Stream Summary & Timestamps</div>
             </div>
         </div>
-        <span class="badge-tag">TA 2026/2027 GANJIL</span>
+        <div class="header-right">
+            <span class="badge-tag">TA 2026/2027 GANJIL</span>
+        </div>
     </header>
 
+    <!-- DASHBOARD CONTAINER -->
     <div class="main-container">
+        
         <!-- KOLOM KIRI: YOUTUBE PLAYER -->
         <div class="video-section">
             <div class="video-card">
@@ -395,16 +472,17 @@
 
         <!-- KOLOM KANAN: RANGKUMAN MATERI INTERAKTIF -->
         <div class="summary-section">
+            
+            <!-- Filter & Controls Bar -->
             <div class="controls-bar">
                 <div class="view-toggler">
-                    <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Lengkap</button>
+                    <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Terperinci (14 Poin)</button>
                     <button class="toggle-btn" onclick="switchView('singkat')">⚡ Versi Singkat (Executive)</button>
                 </div>
 
                 <div class="search-box">
                     <span class="search-icon">🔍</span>
-                    <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Cari materi, tanggal, dokumen, atau nama dosen..." autocomplete="off">
-                    <span class="kbd-hint mono">/</span>
+                    <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Cari materi, tanggal, dokumen MOA/IA, nama dosen..." autocomplete="off">
                 </div>
 
                 <div class="chip-row">
@@ -414,23 +492,26 @@
                     <button class="chip" onclick="filterCategory('timeline', this)">Timeline</button>
                     <button class="chip" onclick="filterCategory('alur', this)">Alur FTI</button>
                     <button class="chip" onclick="filterCategory('dokumen', this)">Dokumen</button>
-                    <button class="chip" onclick="filterCategory('aturan', this)">Aturan</button>
-                    <button class="chip" onclick="filterCategory('tanya', this)">Tanya Jawab</button>
+                    <button class="chip" onclick="filterCategory('siskerma', this)">Siskerma (Kerja Sama)</button>
+                    <button class="chip" onclick="filterCategory('aturan', this)">Aturan Strict</button>
+                    <button class="chip" onclick="filterCategory('tanya', this)">FAQ</button>
                 </div>
             </div>
 
+            <!-- Content Area Scrollable -->
             <div class="content-scroll" id="contentArea">
                 
-                <!-- VIEW 1: VERSI LENGKAP (TIMESTAMP SUDAH PRESISI REAL) -->
+                <!-- VIEW 1: VERSI TERPERINCI -->
                 <div id="view-lengkap">
                     
-                    <!-- Item 1: 00:25:36 = 1536s -->
+                    <!-- 1. APA ITU PKM -->
                     <div class="card" style="--cat-color: var(--cat-dasar)" data-cat="dasar">
                         <div class="card-header">
-                            <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1536, '25:36', 'Apa itu PKM & Manfaat', this)">
-                                ⏱️ 25:36
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(1536, '25:36', 'Apa itu PKM & Manfaat', this)">⏱️ 25:36</button>
                         </div>
                         <ul>
                             <li><b>Definisi:</b> Kegiatan nyata menerapkan pengetahuan dan solusi TI untuk membantu mitra (sekolah, UMKM, instansi, swasta, atau komunitas).</li>
@@ -438,13 +519,14 @@
                         </ul>
                     </div>
 
-                    <!-- Item 2: 00:27:05 = 1625s -->
+                    <!-- 2. SYARAT PESERTA -->
                     <div class="card" style="--cat-color: var(--cat-syarat)" data-cat="syarat">
                         <div class="card-header">
-                            <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1625, '27:05', 'Syarat Peserta & Pembentukan Tim', this)">
-                                ⏱️ 27:05
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(1625, '27:05', 'Syarat Peserta & Tim', this)">⏱️ 27:05</button>
                         </div>
                         <ul>
                             <li><b>Syarat:</b> Mahasiswa aktif Teknik Informatika S-1 (Semester 5 atau lebih).</li>
@@ -452,13 +534,14 @@
                         </ul>
                     </div>
 
-                    <!-- Item 3: 00:27:37 = 1657s -->
+                    <!-- 3. TIMELINE PELAKSANAAN -->
                     <div class="card" style="--cat-color: var(--cat-timeline)" data-cat="timeline">
                         <div class="card-header">
-                            <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1657, '27:37', 'Timeline Pelaksanaan PKM', this)">
-                                ⏱️ 27:37
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(1657, '27:37', 'Timeline Pelaksanaan PKM', this)">⏱️ 27:37</button>
                         </div>
                         <ul>
                             <li><b>16–30 Sep 2026:</b> Pembentukan Kelompok & Pengajuan Judul.</li>
@@ -470,26 +553,28 @@
                         </ul>
                     </div>
 
-                    <!-- Item 4: 00:29:57 = 1797s -->
+                    <!-- 4. ALUR 9 TAHAPAN FTI -->
                     <div class="card" style="--cat-color: var(--cat-alur)" data-cat="alur">
                         <div class="card-header">
-                            <span class="card-title">4. Alur 9 Tahapan FTI</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1797, '29:57', 'Alur 9 Tahapan FTI', this)">
-                                ⏱️ 29:57
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">4. Alur 9 Tahapan FTI</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(1797, '29:57', 'Alur 9 Tahapan FTI', this)">⏱️ 29:57</button>
                         </div>
                         <ul>
                             <li>Isi data di FTI → Pengajuan MOA/IA di Siskerma → Plotting Dosen oleh Kemahasiswaan → Upload Proposal → Validasi Pembimbing → Pelaksanaan PKM → Upload Laporan & Luaran → Double Check Validasi → Sertifikat Terbit.</li>
                         </ul>
                     </div>
 
-                    <!-- Item 5: 00:33:12 = 1992s -->
+                    <!-- 5. TEMPLATE PROPOSAL & LAPORAN -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
-                            <span class="card-title">5. Template Proposal & Laporan Akhir</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1992, '33:12', 'Template Proposal & Laporan Akhir', this)">
-                                ⏱️ 33:12
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">5. Template Proposal & Laporan Akhir</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(1992, '33:12', 'Template Proposal & Laporan', this)">⏱️ 33:12</button>
                         </div>
                         <ul>
                             <li>Wajib memakai template resmi prodi. Laporan akhir tidak perlu *hard cover* (cukup PDF).</li>
@@ -498,13 +583,14 @@
                         </ul>
                     </div>
 
-                    <!-- Item 6: 00:37:30 = 2250s -->
+                    <!-- 6. LUARAN HKI -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
-                            <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(2250, '37:30', 'Luaran HKI (Hak Cipta)', this)">
-                                ⏱️ 37:30
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(2250, '37:30', 'Luaran HKI (Hak Cipta)', this)">⏱️ 37:30</button>
                         </div>
                         <ul>
                             <li>Sertifikat HKI menjadi nilai tambah / syarat minimum sertifikat untuk pengajuan UAPS.</li>
@@ -513,13 +599,14 @@
                         </ul>
                     </div>
 
-                    <!-- Item 7: 00:40:31 = 2431s -->
+                    <!-- 7. CATATAN PENTING PKM -->
                     <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
                         <div class="card-header">
-                            <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(2431, '40:31', 'Catatan Penting Pelaksanaan PKM', this)">
-                                ⏱️ 40:31
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(2431, '40:31', 'Catatan Penting Pelaksanaan PKM', this)">⏱️ 40:31</button>
                         </div>
                         <ul>
                             <li><b>Wajib Berbasis Produk:</b> Luaran harus berupa produk/karya sistem IT (bukan sekadar sosialisasi).</li>
@@ -528,37 +615,137 @@
                         </ul>
                     </div>
 
-                    <!-- Item 8: 00:43:32 = 2612s -->
-                    <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
+                    <!-- =======================================================
+                         BREAKDOWN POIN 8: DOKUMEN KERJA SAMA (SISKERMA)
+                         ======================================================= -->
+
+                    <!-- 8.1 TIM & WILAYAH KERJA SAMA -->
+                    <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <span class="card-title">8. Dokumen Kerja Sama (Siskerma)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(2612, '43:32', 'Dokumen Kerja Sama (Siskerma)', this)">
-                                ⏱️ 43:32
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">8. Tim & Penentuan Wilayah Kerja Sama</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(2612, '43:32', 'Tim & Wilayah Kerja Sama', this)">⏱️ 43:32</button>
                         </div>
                         <ul>
-                            <li><b>Tim Kerja Sama:</b> Pak Nanang (Koordinator), Pak Jufron, Bu Badriah.</li>
-                            <li><b>Wilayah Kerja Sama:</b> Jawa Barat & Banten (LLDIKTI IV) = <b>Lokal</b>. DKI Jakarta (LLDIKTI III) = <b>Nasional</b>.</li>
-                            <li><b>MOA (Awal Kegiatan):</b> Dibuat 2 rangkap dengan materai 10.000 di TTD Kaprodi & Pimpinan Mitra via <span class="mono">s.id/siskerma</span>.</li>
-                            <li><b>IA & LPKS (Akhir Kegiatan):</b> Dibuat di <span class="mono">siskerma.unpam.ac.id</span>. Bukti screenshot validasi IA wajib dilampirkan di laporan akhir.</li>
-                            <li><b>Aturan Warna Teks Template IA:</b> Merah (No IA), Kuning (Data Riil), Hitam (Baku), Biru (No MOA — <i>jika tidak ada MOA, kalimat biru wajib dihapus total</i>).</li>
+                            <li><b>Tim Kerja Sama Prodi TI:</b> Pak Nanang (Koordinator), Pak Jufron (Anggota 1), Bu Badriah (Anggota 2).</li>
+                            <li><b>Penentuan Tingkat Wilayah (Akreditasi):</b>
+                                <ul>
+                                    <li><b>Tingkat Lokal / Regional:</b> Lokasi mitra di wilayah LLDIKTI IV (Jawa Barat & Banten: Depok, Tangerang, Tangsel, Bogor, Bandung, Serang, dll).</li>
+                                    <li><b>Tingkat Nasional:</b> Lokasi mitra di luar LLDIKTI IV (Contoh: DKI Jakarta masuk LLDIKTI III, sehingga otomatis kategori **NASIONAL**).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- 8.2 HIERARKI & JENIS DOKUMEN -->
+                    <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">9. Hierarki Dokumen (MOU, MOA, IA, LPKS)</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(3124, '52:04', 'Hierarki Dokumen Kerja Sama', this)">⏱️ 52:04</button>
+                        </div>
+                        <ul>
+                            <li><b>MOU (Memorandum of Understanding):</b> Tingkat Universitas, TTD Rektor.</li>
+                            <li><b>MOA (Memorandum of Agreement / PKS):</b> Tingkat Fakultas/Prodi, TTD Kaprodi & Mitra di awal kegiatan (minimal jangka waktu 1 tahun).</li>
+                            <li><b>IA (Implementation Arrangement):</b> Surat Keterangan Pelaksanaan Kerja Sama oleh Dosen & Mahasiswa di akhir kegiatan (<b>WAJIB</b>).</li>
+                            <li><b>LPKS (Laporan Pelaksanaan Kerja Sama):</b> Lembar rekapitulasi 1 paket dengan IA yang berisi judul, hasil output, dan link press release.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8.3 PROSEDUR PENGAJUAN MOA -->
+                    <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">10. Prosedur Pengajuan MOA (Awal Kegiatan)</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(3287, '54:47', 'Prosedur Pengajuan MOA', this)">⏱️ 54:47</button>
+                        </div>
+                        <ul>
+                            <li><b>Alur Pengajuan:</b> Akses portal <span class="mono">s.id/siskerma</span> <button class="copy-btn" onclick="copyText('s.id/siskerma')">Salin Link</button> → Unduh Template MoA → Isi Google Form Pengajuan → Konfirmasi ke Tim Kerja Sama.</li>
+                            <li><b>Aturan Cetak & Materai:</b> Cetak 2 rangkap dengan **Materai 10.000**:
+                                <ul>
+                                    <li><b>Rangkap 1:</b> Materai ditempel di kolom TTD Kaprodi.</li>
+                                    <li><b>Rangkap 2:</b> Materai ditempel di kolom TTD Pimpinan Mitra.</li>
+                                </ul>
+                            </li>
+                            <li>Kedua rangkap wajib dibubuhi stempel basah resmi, lalu di-scan dan diunggah kembali ke GForm pelaporan.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8.4 PROSEDUR PENGAJUAN IA & LPKS -->
+                    <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">11. Prosedur IA & LPKS di Portal Siskerma</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(3426, '57:06', 'Prosedur Pengajuan IA & LPKS', this)">⏱️ 57:06</button>
+                        </div>
+                        <ul>
+                            <li><b>Alur Sistem:</b> Login ke <span class="mono">siskerma.unpam.ac.id</span> <button class="copy-btn" onclick="copyText('siskerma.unpam.ac.id')">Salin Link</button> → Ambil Nomor IA resmi → Unduh Template IA & LPKS khusus Prodi TI → Lengkapi data, minta TTD & Stempel Basah Mitra → Upload ulang ke Siskerma → Tunggu Validasi Prodi.</li>
+                            <li><b>Syarat Sertifikat:</b> **Bukti screenshot status validasi IA di Siskerma WAJIB dilampirkan pada Laporan Akhir PKM di FTI**.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8.5 KODE WARNA TEMPLATE IA -->
+                    <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">12. Aturan Kode Warna Teks Template IA</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(3610, '01:00:10', 'Kode Warna Template IA', this)">⏱️ 01:00:10</button>
+                        </div>
+                        <ul>
+                            <li><b>Teks Warna Merah (Atas):</b> Diisi dengan Nomor IA resmi dari portal Siskerma.</li>
+                            <li><b>Teks Warna Kuning:</b> Diisi/diganti dengan data riil kegiatan PKM (Nama Mitra, Tanggal, Dosen, Mahasiswa).</li>
+                            <li><b>Teks Warna Hitam:</b> Kalimat baku prodi (<b>DILARANG DIUBAH/DIHAPUS</b>).</li>
+                            <li><b>Teks Warna Biru (Paragraf Referensi MoA):</b>
+                                <ul>
+                                    <li>Jika **ADA MOA**: Ganti teks warna biru dengan **Nomor MOA** kelompokmu.</li>
+                                    <li>Jika **TIDAK ADA MOA**: **HAPUS TOTAL** kalimat berwarna biru tersebut!</li>
+                                </ul>
+                            </li>
+                            <li style="color: var(--danger-text);">⚠️ <b>Kesalahan Fatal Mahasiswa:</b> Mengisi teks warna biru dengan Nomor IA. Teks biru khusus untuk Nomor MOA!</li>
+                        </ul>
+                    </div>
+
+                    <!-- 8.6 ATURAN STRICT & PRESS RELEASE -->
+                    <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
+                        <div class="card-header">
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">13. Aturan Strict Stempel & Press Release</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(3682, '01:01:22', 'Aturan Strict Stempel & Berita', this)">⏱️ 01:01:22</button>
+                        </div>
+                        <ul>
+                            <li><b>Wajib TTD & Stempel Basah:</b> Seluruh dokumen wajib ditandatangani dan distempel basah fisik sebelum di-scan.</li>
+                            <li><b>Syarat Media Press Release Berita:</b> Link berita di LPKS **WAJIB** terbit di media berita online resmi/massal (Tangerang Express, Visione, Detik, Kompas, dll).</li>
+                            <li><b>Ketentuan Foto Kegiatan:</b> Wajib foto formal/resmi di lokasi mitra (menampilkan spanduk kegiatan/plang identitas mitra).</li>
                         </ul>
                         <div class="alert-box">
-                            <b>❌ Dilarang Keras:</b> Meng-crop / edit digital stempel & TTD (dianggap pemalsuan dokumen). Press release wajib terbit di portal berita online resmi (tidak boleh di YouTube/blog pribadi).
+                            <b>❌ Dilarang Keras:</b> Meng-crop / edit digital stempel & TTD (dikategorikan pemalsuan dokumen). Dilarang mengunggah link berita dari YouTube, blog pribadi (Wordpress/Blogspot), atau sosial media.
                         </div>
                     </div>
 
-                    <!-- Item 9: 01:08:56 = 4136s -->
+                    <!-- 14. TANYA JAWAB POIN PENTING -->
                     <div class="card" style="--cat-color: var(--cat-tanya)" data-cat="tanya">
                         <div class="card-header">
-                            <span class="card-title">9. Tanya Jawab Poin Penting</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(4136, '01:08:56', 'Tanya Jawab Poin Penting', this)">
-                                ⏱️ 01:08:56
-                            </button>
+                            <div class="card-title-group">
+                                <div class="check-box" onclick="toggleCheck(this)"></div>
+                                <span class="card-title">14. Tanya Jawab Poin Penting (FAQ)</span>
+                            </div>
+                            <button class="timestamp-btn mono" onclick="seekTo(4136, '01:08:56', 'Tanya Jawab Poin Penting', this)">⏱️ 01:08:56</button>
                         </div>
                         <ul>
-                            <li><b>Cek Pembimbing:</b> Cek berkala di akun FTI masing-masing setelah pengajuan judul divalidasi.</li>
-                            <li><b>Kunjungan Mitra:</b> Wajib meminta Surat Pengantar / Surat Tugas Resmi dari Prodi TI sebelum kunjungan ke lokasi mitra.</li>
+                            <li><b>Cek Dosen Pembimbing:</b> Dosen di-plot oleh Tim Kemahasiswaan FTI. Cek secara berkala di akun FTI masing-masing setelah judul divalidasi.</li>
+                            <li><b>Surat Pengantar Visit Mitra:</b> Setiap kelompok yang akan berkunjung ke lokasi mitra **WAJIB meminta Surat Pengantar / Surat Tugas Resmi dari Prodi TI** karena membawa nama instansi UNPAM.</li>
                         </ul>
                     </div>
 
@@ -598,15 +785,15 @@
                         </ul>
                     </div>
 
-                    <div class="card" style="--cat-color: var(--cat-dokumen)">
+                    <div class="card" style="--cat-color: var(--cat-siskerma)">
                         <div class="card-header">
                             <span class="card-title">🔗 Link Akses Cepat</span>
                         </div>
                         <ul>
-                            <li><b>Portal Informasi PKM:</b> <a href="https://sites.google.com/unpam.ac.id/kemahasiswaan-ti/pkm-mahasiswa" target="_blank" style="color:var(--accent-blue);">sites.google.com/.../pkm-mahasiswa</a></li>
-                            <li><b>Grup WA Ketua PKM:</b> <a href="https://chat.whatsapp.com/IQkrElaUut10w0UKWMFvRk" target="_blank" style="color:var(--accent-blue);">chat.whatsapp.com/...</a></li>
-                            <li><b>Sistem Kerja Sama:</b> <a href="https://siskerma.unpam.ac.id" target="_blank" style="color:var(--accent-blue);">siskerma.unpam.ac.id</a></li>
-                            <li><b>Pendaftaran HKI:</b> <a href="https://hakcipta.dgip.go.id" target="_blank" style="color:var(--accent-blue);">hakcipta.dgip.go.id</a></li>
+                            <li><b>Portal Informasi PKM:</b> <a href="https://sites.google.com/unpam.ac.id/kemahasiswaan-ti/pkm-mahasiswa" target="_blank" style="color:var(--accent-cyan);">sites.google.com/.../pkm-mahasiswa</a></li>
+                            <li><b>Grup WA Ketua PKM:</b> <a href="https://chat.whatsapp.com/IQkrElaUut10w0UKWMFvRk" target="_blank" style="color:var(--accent-cyan);">chat.whatsapp.com/...</a></li>
+                            <li><b>Sistem Kerja Sama:</b> <a href="https://siskerma.unpam.ac.id" target="_blank" style="color:var(--accent-cyan);">siskerma.unpam.ac.id</a></li>
+                            <li><b>Pendaftaran HKI:</b> <a href="https://hakcipta.dgip.go.id" target="_blank" style="color:var(--accent-cyan);">hakcipta.dgip.go.id</a></li>
                         </ul>
                     </div>
                 </div>
@@ -702,6 +889,15 @@
                     card.style.display = 'none';
                 }
             });
+        }
+
+        function toggleCheck(el) {
+            el.classList.toggle('checked');
+        }
+
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert('Link disalin ke clipboard: ' + text);
         }
 
         document.addEventListener('keydown', (e) => {
