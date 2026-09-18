@@ -10,24 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Stylesheet Dashboard -->
     <style>
-        /* ==========================================================================
-           1. VARIABEL WARNA & TEMA (EASY CUSTOMIZATION)
-           ========================================================================== */
         :root {
             --bg-main: #0b0f19;
             --bg-card: #131b2e;
             --bg-card-hover: #1a253d;
             --border-soft: rgba(255, 255, 255, 0.08);
-            --border-active: rgba(59, 130, 246, 0.4);
             
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
             
             --accent-blue: #3b82f6;
-            --accent-blue-hover: #2563eb;
             --accent-glow: rgba(59, 130, 246, 0.15);
             --accent-cyan: #06b6d4;
 
@@ -45,9 +39,6 @@
             --danger-text: #fca5a5;
         }
 
-        /* ==========================================================================
-           2. BASE RESET & LAYOUT
-           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -67,7 +58,6 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
-        /* Header Bar */
         header {
             background-color: rgba(11, 15, 25, 0.85);
             backdrop-filter: blur(16px);
@@ -87,20 +77,9 @@
             gap: 12px;
         }
 
-        .header-brand .icon {
-            font-size: 1.25rem;
-        }
-
-        .header-brand .title {
-            font-size: 1.1rem;
-            font-weight: 800;
-            letter-spacing: -0.01em;
-        }
-
-        .header-brand .subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
+        .header-brand .icon { font-size: 1.25rem; }
+        .header-brand .title { font-size: 1.1rem; font-weight: 800; }
+        .header-brand .subtitle { font-size: 0.75rem; color: var(--text-muted); }
 
         .badge-tag {
             background: var(--accent-glow);
@@ -110,10 +89,8 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
-            letter-spacing: 0.02em;
         }
 
-        /* Main Grid Layout */
         .main-container {
             display: grid;
             grid-template-columns: 1.05fr 0.95fr;
@@ -123,10 +100,6 @@
             margin: 0 auto;
         }
 
-        /* ==========================================================================
-           3. KANAN & KIRI SECTION CARDS
-           ========================================================================== */
-        /* Left Sticky Column (Player) */
         .video-section {
             position: sticky;
             top: 90px;
@@ -153,27 +126,14 @@
 
         .video-wrapper iframe {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             border: 0;
         }
 
-        .video-meta {
-            padding: 20px;
-        }
-
-        .video-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .video-subtitle {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
+        .video-meta { padding: 20px; }
+        .video-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 4px; }
+        .video-subtitle { font-size: 0.85rem; color: var(--text-secondary); }
 
         .now-playing-bar {
             margin-top: 12px;
@@ -188,8 +148,7 @@
         }
 
         .now-playing-bar .pulse-dot {
-            width: 8px;
-            height: 8px;
+            width: 8px; height: 8px;
             border-radius: 50%;
             background-color: var(--accent-cyan);
             box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5);
@@ -202,7 +161,6 @@
             100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
         }
 
-        /* Right Scrollable Column (Summary) */
         .summary-section {
             background-color: var(--bg-card);
             border: 1px solid var(--border-soft);
@@ -215,7 +173,6 @@
             overflow: hidden;
         }
 
-        /* Controls & Search */
         .controls-bar {
             display: flex;
             flex-direction: column;
@@ -251,39 +208,30 @@
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
         }
 
-        .search-box {
-            position: relative;
-        }
+        .search-box { position: relative; }
 
         .search-box input {
             width: 100%;
-            padding: 12px 40px 12px 40px;
+            padding: 12px 40px;
             background-color: var(--bg-main);
             border: 1px solid var(--border-soft);
             border-radius: 12px;
             color: var(--text-primary);
             font-size: 0.875rem;
             outline: none;
-            transition: border-color 0.2s;
         }
 
-        .search-box input:focus {
-            border-color: var(--accent-blue);
-        }
+        .search-box input:focus { border-color: var(--accent-blue); }
 
         .search-box .search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
+            position: absolute; left: 14px; top: 50%;
             transform: translateY(-50%);
             color: var(--text-muted);
             pointer-events: none;
         }
 
         .search-box .kbd-hint {
-            position: absolute;
-            right: 14px;
-            top: 50%;
+            position: absolute; right: 14px; top: 50%;
             transform: translateY(-50%);
             font-size: 0.7rem;
             color: var(--text-muted);
@@ -293,10 +241,8 @@
             pointer-events: none;
         }
 
-        /* Category Chips Filter */
         .chip-row {
-            display: flex;
-            gap: 8px;
+            display: flex; gap: 8px;
             overflow-x: auto;
             padding-bottom: 4px;
             scrollbar-width: none;
@@ -316,18 +262,9 @@
             transition: all 0.2s ease;
         }
 
-        .chip:hover {
-            border-color: var(--accent-blue);
-            color: var(--text-primary);
-        }
+        .chip:hover { border-color: var(--accent-blue); color: var(--text-primary); }
+        .chip.active { background: var(--accent-glow); border-color: var(--accent-blue); color: var(--accent-blue); }
 
-        .chip.active {
-            background: var(--accent-glow);
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-        }
-
-        /* Scroll Area Content */
         .content-scroll {
             overflow-y: auto;
             padding-right: 6px;
@@ -336,15 +273,9 @@
             gap: 14px;
         }
 
-        .content-scroll::-webkit-scrollbar {
-            width: 6px;
-        }
-        .content-scroll::-webkit-scrollbar-thumb {
-            background-color: var(--border-soft);
-            border-radius: 10px;
-        }
+        .content-scroll::-webkit-scrollbar { width: 6px; }
+        .content-scroll::-webkit-scrollbar-thumb { background-color: var(--border-soft); border-radius: 10px; }
 
-        /* Item Cards */
         .card {
             background-color: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border-soft);
@@ -354,10 +285,7 @@
             transition: all 0.25s ease;
         }
 
-        .card:hover {
-            background-color: var(--bg-card-hover);
-            border-color: rgba(255, 255, 255, 0.15);
-        }
+        .card:hover { background-color: var(--bg-card-hover); border-color: rgba(255, 255, 255, 0.15); }
 
         .card.active-playing {
             border-color: var(--accent-cyan) !important;
@@ -374,11 +302,7 @@
             margin-bottom: 10px;
         }
 
-        .card-title {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
 
         .timestamp-btn {
             background: var(--accent-glow);
@@ -396,37 +320,12 @@
             flex-shrink: 0;
         }
 
-        .timestamp-btn:hover {
-            background-color: var(--accent-blue);
-            color: #ffffff;
-            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
-        }
+        .timestamp-btn:hover { background-color: var(--accent-blue); color: #ffffff; }
 
-        ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        li {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            position: relative;
-            padding-left: 16px;
-        }
-
-        li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--cat-color, var(--accent-blue));
-            font-weight: bold;
-        }
-
-        li b {
-            color: var(--text-primary);
-        }
+        ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+        li { font-size: 0.85rem; color: var(--text-secondary); position: relative; padding-left: 16px; }
+        li::before { content: "•"; position: absolute; left: 0; color: var(--cat-color, var(--accent-blue)); font-weight: bold; }
+        li b { color: var(--text-primary); }
 
         .alert-box {
             background-color: var(--danger-bg);
@@ -438,7 +337,6 @@
             margin-top: 10px;
         }
 
-        /* Executive Grid View */
         .highlight-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -453,44 +351,19 @@
             border-radius: 12px;
         }
 
-        .highlight-item h4 {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+        .highlight-item h4 { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
+        .highlight-item p { font-size: 0.95rem; font-weight: 700; color: var(--accent-blue); }
 
-        .highlight-item p {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--accent-blue);
-        }
-
-        /* Responsive Layout */
         @media (max-width: 1024px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                padding: 16px;
-            }
-
-            .video-section {
-                position: static;
-            }
-
-            .summary-section {
-                max-height: none;
-            }
-
-            header {
-                padding: 14px 16px;
-            }
+            .main-container { grid-template-columns: 1fr; padding: 16px; }
+            .video-section { position: static; }
+            .summary-section { max-height: none; }
+            header { padding: 14px 16px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER BAR -->
     <header>
         <div class="header-brand">
             <span class="icon">📌</span>
@@ -502,14 +375,11 @@
         <span class="badge-tag">TA 2026/2027 GANJIL</span>
     </header>
 
-    <!-- MAIN DASHBOARD CONTENT -->
     <div class="main-container">
-        
         <!-- KOLOM KIRI: YOUTUBE PLAYER -->
         <div class="video-section">
             <div class="video-card">
                 <div class="video-wrapper">
-                    <!-- YouTube Player Container -->
                     <div id="youtube-player"></div>
                 </div>
                 <div class="video-meta">
@@ -525,8 +395,6 @@
 
         <!-- KOLOM KANAN: RANGKUMAN MATERI INTERAKTIF -->
         <div class="summary-section">
-            
-            <!-- Controls & Filter Bar -->
             <div class="controls-bar">
                 <div class="view-toggler">
                     <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Lengkap</button>
@@ -551,18 +419,17 @@
                 </div>
             </div>
 
-            <!-- Scrollable Content Area -->
             <div class="content-scroll" id="contentArea">
                 
-                <!-- VIEW 1: VERSI LENGKAP -->
+                <!-- VIEW 1: VERSI LENGKAP (TIMESTAMP SUDAH PRESISI REAL) -->
                 <div id="view-lengkap">
                     
-                    <!-- Item 1 -->
+                    <!-- Item 1: 00:25:36 = 1536s -->
                     <div class="card" style="--cat-color: var(--cat-dasar)" data-cat="dasar">
                         <div class="card-header">
                             <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(552, '00:09:12', 'Apa itu PKM & Manfaat', this)">
-                                ⏱️ 09:12
+                            <button class="timestamp-btn mono" onclick="seekTo(1536, '25:36', 'Apa itu PKM & Manfaat', this)">
+                                ⏱️ 25:36
                             </button>
                         </div>
                         <ul>
@@ -571,12 +438,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 2 -->
+                    <!-- Item 2: 00:27:05 = 1625s -->
                     <div class="card" style="--cat-color: var(--cat-syarat)" data-cat="syarat">
                         <div class="card-header">
                             <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(978, '00:16:18', 'Syarat Peserta & Pembentukan Tim', this)">
-                                ⏱️ 16:18
+                            <button class="timestamp-btn mono" onclick="seekTo(1625, '27:05', 'Syarat Peserta & Pembentukan Tim', this)">
+                                ⏱️ 27:05
                             </button>
                         </div>
                         <ul>
@@ -585,12 +452,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 3 -->
+                    <!-- Item 3: 00:27:37 = 1657s -->
                     <div class="card" style="--cat-color: var(--cat-timeline)" data-cat="timeline">
                         <div class="card-header">
                             <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1016, '00:16:56', 'Timeline Pelaksanaan PKM', this)">
-                                ⏱️ 16:56
+                            <button class="timestamp-btn mono" onclick="seekTo(1657, '27:37', 'Timeline Pelaksanaan PKM', this)">
+                                ⏱️ 27:37
                             </button>
                         </div>
                         <ul>
@@ -603,12 +470,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 4 -->
+                    <!-- Item 4: 00:29:57 = 1797s -->
                     <div class="card" style="--cat-color: var(--cat-alur)" data-cat="alur">
                         <div class="card-header">
                             <span class="card-title">4. Alur 9 Tahapan FTI</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1069, '00:17:49', 'Alur 9 Tahapan FTI', this)">
-                                ⏱️ 17:49
+                            <button class="timestamp-btn mono" onclick="seekTo(1797, '29:57', 'Alur 9 Tahapan FTI', this)">
+                                ⏱️ 29:57
                             </button>
                         </div>
                         <ul>
@@ -616,12 +483,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 5 -->
+                    <!-- Item 5: 00:33:12 = 1992s -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
                             <span class="card-title">5. Template Proposal & Laporan Akhir</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1189, '00:19:49', 'Template Proposal & Laporan Akhir', this)">
-                                ⏱️ 19:49
+                            <button class="timestamp-btn mono" onclick="seekTo(1992, '33:12', 'Template Proposal & Laporan Akhir', this)">
+                                ⏱️ 33:12
                             </button>
                         </div>
                         <ul>
@@ -631,12 +498,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 6 -->
+                    <!-- Item 6: 00:37:30 = 2250s -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
                             <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1337, '00:22:17', 'Luaran HKI (Hak Cipta)', this)">
-                                ⏱️ 22:17
+                            <button class="timestamp-btn mono" onclick="seekTo(2250, '37:30', 'Luaran HKI (Hak Cipta)', this)">
+                                ⏱️ 37:30
                             </button>
                         </div>
                         <ul>
@@ -646,12 +513,12 @@
                         </ul>
                     </div>
 
-                    <!-- Item 7 -->
+                    <!-- Item 7: 00:40:31 = 2431s -->
                     <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
                         <div class="card-header">
                             <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(1422, '00:23:42', 'Catatan Penting Pelaksanaan PKM', this)">
-                                ⏱️ 23:42
+                            <button class="timestamp-btn mono" onclick="seekTo(2431, '40:31', 'Catatan Penting Pelaksanaan PKM', this)">
+                                ⏱️ 40:31
                             </button>
                         </div>
                         <ul>
@@ -661,11 +528,11 @@
                         </ul>
                     </div>
 
-                    <!-- Item 8 -->
+                    <!-- Item 8: 00:43:32 = 2612s -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
                             <span class="card-title">8. Dokumen Kerja Sama (Siskerma)</span>
-                            <button class="timestamp-btn mono" onclick="seekTo(2612, '00:43:32', 'Dokumen Kerja Sama (Siskerma)', this)">
+                            <button class="timestamp-btn mono" onclick="seekTo(2612, '43:32', 'Dokumen Kerja Sama (Siskerma)', this)">
                                 ⏱️ 43:32
                             </button>
                         </div>
@@ -681,7 +548,7 @@
                         </div>
                     </div>
 
-                    <!-- Item 9 -->
+                    <!-- Item 9: 01:08:56 = 4136s -->
                     <div class="card" style="--cat-color: var(--cat-tanya)" data-cat="tanya">
                         <div class="card-header">
                             <span class="card-title">9. Tanya Jawab Poin Penting</span>
@@ -697,7 +564,7 @@
 
                 </div>
 
-                <!-- VIEW 2: VERSI SINGKAT (EXECUTIVE) -->
+                <!-- VIEW 2: VERSI SINGKAT -->
                 <div id="view-singkat" style="display: none;">
                     <div class="highlight-grid">
                         <div class="highlight-item">
@@ -751,11 +618,7 @@
     <!-- YOUTUBE IFRAME API SCRIPT -->
     <script src="https://www.youtube.com/iframe_api"></script>
 
-    <!-- SCRIPT UTAMA DASHBOARD -->
     <script>
-        // ==========================================
-        // 1. INITIALIZATION YOUTUBE PLAYER API
-        // ==========================================
         let ytPlayer;
         const VIDEO_ID = 'ugcQfkfmm00';
 
@@ -774,37 +637,27 @@
         }
 
         function onPlayerReady(event) {
-            document.getElementById('now-playing-text').textContent = 'Siap diputar. Pilih materi di kanan untuk melompat.';
+            document.getElementById('now-playing-text').textContent = 'Siap diputar. Klik tombol timestamp di kanan untuk melompat.';
         }
 
-        // ==========================================
-        // 2. INTERACTIVE JUMP TO TIMESTAMP
-        // ==========================================
         function seekTo(seconds, timestampLabel, title, btnElement) {
             if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
                 ytPlayer.seekTo(seconds, true);
                 ytPlayer.playVideo();
-                
-                // Update text status now playing
                 document.getElementById('now-playing-text').textContent = `Sedang Memutar: ${title} (${timestampLabel})`;
             }
 
-            // Highlight Active Card
             document.querySelectorAll('.card').forEach(card => card.classList.remove('active-playing'));
             if (btnElement) {
                 const parentCard = btnElement.closest('.card');
                 if (parentCard) parentCard.classList.add('active-playing');
             }
 
-            // Mobile view: auto scroll to video player
             if (window.innerWidth <= 1024) {
                 document.querySelector('.video-section').scrollIntoView({ behavior: 'smooth' });
             }
         }
 
-        // ==========================================
-        // 3. TOGGLE VIEW (LENGKAP VS SINGKAT)
-        // ==========================================
         function switchView(mode) {
             const lengkapView = document.getElementById('view-lengkap');
             const singkatView = document.getElementById('view-singkat');
@@ -823,9 +676,6 @@
             }
         }
 
-        // ==========================================
-        // 4. FILTER CATEGORY & SEARCH
-        // ==========================================
         let selectedCategory = 'all';
 
         function filterCategory(cat, element) {
@@ -854,7 +704,6 @@
             });
         }
 
-        // Keyboard Shortcut: Press '/' to focus search box
         document.addEventListener('keydown', (e) => {
             if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
                 e.preventDefault();
