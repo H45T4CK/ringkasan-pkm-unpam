@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Ringkasan PKM UNPAM 2026/2027</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet Dashboard -->
+    <style>
+        /* ==========================================================================
+           1. VARIABEL WARNA & TEMA (EASY CUSTOMIZATION)
+           ========================================================================== */
+        :root {
+            --bg-main: #0b0f19;
+            --bg-card: #131b2e;
+            --bg-card-hover: #1a253d;
+            --border-soft: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(59, 130, 246, 0.4);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            --accent-blue: #3b82f6;
+            --accent-blue-hover: #2563eb;
+            --accent-glow: rgba(59, 130, 246, 0.15);
+            --accent-cyan: #06b6d4;
+
+            /* Category Tag Colors */
+            --cat-dasar: #3b82f6;
+            --cat-syarat: #14b8a6;
+            --cat-timeline: #f59e0b;
+            --cat-alur: #8b5cf6;
+            --cat-dokumen: #f97316;
+            --cat-aturan: #ef4444;
+            --cat-tanya: #10b981;
+
+            --danger-bg: rgba(239, 68, 68, 0.1);
+            --danger-border: rgba(239, 68, 68, 0.25);
+            --danger-text: #fca5a5;
+        }
+
+        /* ==========================================================================
+           2. BASE RESET & LAYOUT
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            background-image: radial-gradient(circle at 15% 0%, rgba(59, 130, 246, 0.08), transparent 45%);
+            color: var(--text-primary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Header Bar */
+        header {
+            background-color: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 16px 32px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-brand .icon {
+            font-size: 1.25rem;
+        }
+
+        .header-brand .title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            letter-spacing: -0.01em;
+        }
+
+        .header-brand .subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .badge-tag {
+            background: var(--accent-glow);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        /* Main Grid Layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 24px;
+            padding: 24px 32px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* ==========================================================================
+           3. KANAN & KIRI SECTION CARDS
+           ========================================================================== */
+        /* Left Sticky Column (Player) */
+        .video-section {
+            position: sticky;
+            top: 90px;
+            height: fit-content;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .video-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            background-color: #000;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-meta {
+            padding: 20px;
+        }
+
+        .video-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .video-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .now-playing-bar {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-soft);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .now-playing-bar .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-cyan);
+            box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5);
+            animation: pulse-ring 1.8s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.5); }
+            70% { box-shadow: 0 0 0 8px rgba(6, 182, 212, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+
+        /* Right Scrollable Column (Summary) */
+        .summary-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-soft);
+            border-radius: 20px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: calc(100vh - 120px);
+            overflow: hidden;
+        }
+
+        /* Controls & Search */
+        .controls-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .view-toggler {
+            display: flex;
+            background-color: var(--bg-main);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .toggle-btn.active {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 40px 12px 40px;
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .search-box .kbd-hint {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            background: var(--border-soft);
+            padding: 2px 6px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        /* Category Chips Filter */
+        .chip-row {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+        }
+        .chip-row::-webkit-scrollbar { display: none; }
+
+        .chip {
+            flex-shrink: 0;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-main);
+            border: 1px solid var(--border-soft);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chip:hover {
+            border-color: var(--accent-blue);
+            color: var(--text-primary);
+        }
+
+        .chip.active {
+            background: var(--accent-glow);
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+        }
+
+        /* Scroll Area Content */
+        .content-scroll {
+            overflow-y: auto;
+            padding-right: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .content-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+        .content-scroll::-webkit-scrollbar-thumb {
+            background-color: var(--border-soft);
+            border-radius: 10px;
+        }
+
+        /* Item Cards */
+        .card {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-soft);
+            border-left: 4px solid var(--cat-color, var(--border-soft));
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            background-color: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .card.active-playing {
+            border-color: var(--accent-cyan) !important;
+            border-left-color: var(--accent-cyan) !important;
+            background-color: rgba(6, 182, 212, 0.06);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .timestamp-btn {
+            background: var(--accent-glow);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .timestamp-btn:hover {
+            background-color: var(--accent-blue);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        li {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 16px;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--cat-color, var(--accent-blue));
+            font-weight: bold;
+        }
+
+        li b {
+            color: var(--text-primary);
+        }
+
+        .alert-box {
+            background-color: var(--danger-bg);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        /* Executive Grid View */
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .highlight-item {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-soft);
+            padding: 14px;
+            border-radius: 12px;
+        }
+
+        .highlight-item h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .highlight-item p {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        /* Responsive Layout */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 16px;
+            }
+
+            .video-section {
+                position: static;
+            }
+
+            .summary-section {
+                max-height: none;
+            }
+
+            header {
+                padding: 14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER BAR -->
+    <header>
+        <div class="header-brand">
+            <span class="icon">📌</span>
+            <div>
+                <div class="title">Summarizer PKM TI UNPAM</div>
+                <div class="subtitle">Dashboard Rangkuman Video Sosialisasi Interactive</div>
+            </div>
+        </div>
+        <span class="badge-tag">TA 2026/2027 GANJIL</span>
+    </header>
+
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div class="main-container">
+        
+        <!-- KOLOM KIRI: YOUTUBE PLAYER -->
+        <div class="video-section">
+            <div class="video-card">
+                <div class="video-wrapper">
+                    <!-- YouTube Player Container -->
+                    <div id="youtube-player"></div>
+                </div>
+                <div class="video-meta">
+                    <div class="video-title">Sosialisasi Pelaksanaan PKM Mahasiswa</div>
+                    <div class="video-subtitle">Program Studi Teknik Informatika — Universitas Pamulang</div>
+                    <div class="now-playing-bar">
+                        <span class="pulse-dot"></span>
+                        <span id="now-playing-text">Memuat pemutar video...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN: RANGKUMAN MATERI INTERAKTIF -->
+        <div class="summary-section">
+            
+            <!-- Controls & Filter Bar -->
+            <div class="controls-bar">
+                <div class="view-toggler">
+                    <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Lengkap</button>
+                    <button class="toggle-btn" onclick="switchView('singkat')">⚡ Versi Singkat (Executive)</button>
+                </div>
+
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Cari materi, tanggal, dokumen, atau nama dosen..." autocomplete="off">
+                    <span class="kbd-hint mono">/</span>
+                </div>
+
+                <div class="chip-row">
+                    <button class="chip active" onclick="filterCategory('all', this)">Semua</button>
+                    <button class="chip" onclick="filterCategory('dasar', this)">Dasar PKM</button>
+                    <button class="chip" onclick="filterCategory('syarat', this)">Syarat Tim</button>
+                    <button class="chip" onclick="filterCategory('timeline', this)">Timeline</button>
+                    <button class="chip" onclick="filterCategory('alur', this)">Alur FTI</button>
+                    <button class="chip" onclick="filterCategory('dokumen', this)">Dokumen</button>
+                    <button class="chip" onclick="filterCategory('aturan', this)">Aturan</button>
+                    <button class="chip" onclick="filterCategory('tanya', this)">Tanya Jawab</button>
+                </div>
+            </div>
+
+            <!-- Scrollable Content Area -->
+            <div class="content-scroll" id="contentArea">
+                
+                <!-- VIEW 1: VERSI LENGKAP -->
+                <div id="view-lengkap">
+                    
+                    <!-- Item 1 -->
+                    <div class="card" style="--cat-color: var(--cat-dasar)" data-cat="dasar">
+                        <div class="card-header">
+                            <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(552, '00:09:12', 'Apa itu PKM & Manfaat', this)">
+                                ⏱️ 09:12
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Definisi:</b> Kegiatan nyata menerapkan pengetahuan dan solusi TI untuk membantu mitra (sekolah, UMKM, instansi, swasta, atau komunitas).</li>
+                            <li><b>Manfaat Utama:</b> Menyelesaikan masalah mitra, meningkatkan efisiensi dan produktivitas melalui teknologi, serta memberikan solusi tepat guna.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="card" style="--cat-color: var(--cat-syarat)" data-cat="syarat">
+                        <div class="card-header">
+                            <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(978, '00:16:18', 'Syarat Peserta & Pembentukan Tim', this)">
+                                ⏱️ 16:18
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Syarat:</b> Mahasiswa aktif Teknik Informatika S-1 (Semester 5 atau lebih).</li>
+                            <li><b>Ketentuan Kelompok:</b> Bebas lintas kelas maupun lintas reguler (Reguler A, B, C) selama masih dalam satu prodi TI.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="card" style="--cat-color: var(--cat-timeline)" data-cat="timeline">
+                        <div class="card-header">
+                            <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(1016, '00:16:56', 'Timeline Pelaksanaan PKM', this)">
+                                ⏱️ 16:56
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>16–30 Sep 2026:</b> Pembentukan Kelompok & Pengajuan Judul.</li>
+                            <li><b>25 Sep–10 Okt 2026:</b> Upload Proposal di FTI.</li>
+                            <li><b>01 Okt–31 Okt 2026:</b> Validasi Proposal oleh Dosen Pembimbing.</li>
+                            <li><b>01 Des–15 Des 2026:</b> Upload Laporan Akhir & Luaran di FTI.</li>
+                            <li><b>01 Des–25 Des 2026:</b> Validasi Laporan & Promosi oleh Tim Marcom.</li>
+                            <li><b>01 Feb 2027:</b> Download Sertifikat PKM (Mulai pukul 00:00 WIB).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 4 -->
+                    <div class="card" style="--cat-color: var(--cat-alur)" data-cat="alur">
+                        <div class="card-header">
+                            <span class="card-title">4. Alur 9 Tahapan FTI</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(1069, '00:17:49', 'Alur 9 Tahapan FTI', this)">
+                                ⏱️ 17:49
+                            </button>
+                        </div>
+                        <ul>
+                            <li>Isi data di FTI → Pengajuan MOA/IA di Siskerma → Plotting Dosen oleh Kemahasiswaan → Upload Proposal → Validasi Pembimbing → Pelaksanaan PKM → Upload Laporan & Luaran → Double Check Validasi → Sertifikat Terbit.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 5 -->
+                    <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
+                        <div class="card-header">
+                            <span class="card-title">5. Template Proposal & Laporan Akhir</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(1189, '00:19:49', 'Template Proposal & Laporan Akhir', this)">
+                                ⏱️ 19:49
+                            </button>
+                        </div>
+                        <ul>
+                            <li>Wajib memakai template resmi prodi. Laporan akhir tidak perlu *hard cover* (cukup PDF).</li>
+                            <li><b>TTD Persetujuan Proposal:</b> Ketua Pelaksana (Kiri), Dosen Pembimbing (Kanan), Dosen Kemahasiswaan (<b>Raditia Vindua, S.Si., M.Kom.</b>) di Tengah.</li>
+                            <li><b>TTD Laporan Akhir:</b> Ketua Pelaksana (Tengah Atas), Dosen Kemahasiswaan (Kiri Bawah), Dosen Pembimbing (Kanan Bawah).</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 6 -->
+                    <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
+                        <div class="card-header">
+                            <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(1337, '00:22:17', 'Luaran HKI (Hak Cipta)', this)">
+                                ⏱️ 22:17
+                            </button>
+                        </div>
+                        <ul>
+                            <li>Sertifikat HKI menjadi nilai tambah / syarat minimum sertifikat untuk pengajuan UAPS.</li>
+                            <li>Pendaftaran via <span class="mono">hakcipta.dgip.go.id</span>. Wajib mencantumkan <b>"Program Studi Teknik Informatika UNPAM"</b> pada kolom Pencipta/Pemegang.</li>
+                            <li><b>Tips Form:</b> Pilih <b>YA</b> pada pertanyaan "Apakah pencipta merupakan badan hukum?" agar sistem tidak meminta NIK KTP prodi.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 7 -->
+                    <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
+                        <div class="card-header">
+                            <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(1422, '00:23:42', 'Catatan Penting Pelaksanaan PKM', this)">
+                                ⏱️ 23:42
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Wajib Berbasis Produk:</b> Luaran harus berupa produk/karya sistem IT (bukan sekadar sosialisasi).</li>
+                            <li><b>Kata Kunci Judul:</b> WAJIB diawali kata <i>Implementasi</i>, <i>Perancangan</i>, atau <i>Pengembangan</i> (hindari kata <i>Sosialisasi</i>).</li>
+                            <li>Mitra wajib memiliki kop surat resmi dan cap/stempel basah.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Item 8 -->
+                    <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
+                        <div class="card-header">
+                            <span class="card-title">8. Dokumen Kerja Sama (Siskerma)</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(2612, '00:43:32', 'Dokumen Kerja Sama (Siskerma)', this)">
+                                ⏱️ 43:32
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Tim Kerja Sama:</b> Pak Nanang (Koordinator), Pak Jufron, Bu Badriah.</li>
+                            <li><b>Wilayah Kerja Sama:</b> Jawa Barat & Banten (LLDIKTI IV) = <b>Lokal</b>. DKI Jakarta (LLDIKTI III) = <b>Nasional</b>.</li>
+                            <li><b>MOA (Awal Kegiatan):</b> Dibuat 2 rangkap dengan materai 10.000 di TTD Kaprodi & Pimpinan Mitra via <span class="mono">s.id/siskerma</span>.</li>
+                            <li><b>IA & LPKS (Akhir Kegiatan):</b> Dibuat di <span class="mono">siskerma.unpam.ac.id</span>. Bukti screenshot validasi IA wajib dilampirkan di laporan akhir.</li>
+                            <li><b>Aturan Warna Teks Template IA:</b> Merah (No IA), Kuning (Data Riil), Hitam (Baku), Biru (No MOA — <i>jika tidak ada MOA, kalimat biru wajib dihapus total</i>).</li>
+                        </ul>
+                        <div class="alert-box">
+                            <b>❌ Dilarang Keras:</b> Meng-crop / edit digital stempel & TTD (dianggap pemalsuan dokumen). Press release wajib terbit di portal berita online resmi (tidak boleh di YouTube/blog pribadi).
+                        </div>
+                    </div>
+
+                    <!-- Item 9 -->
+                    <div class="card" style="--cat-color: var(--cat-tanya)" data-cat="tanya">
+                        <div class="card-header">
+                            <span class="card-title">9. Tanya Jawab Poin Penting</span>
+                            <button class="timestamp-btn mono" onclick="seekTo(4136, '01:08:56', 'Tanya Jawab Poin Penting', this)">
+                                ⏱️ 01:08:56
+                            </button>
+                        </div>
+                        <ul>
+                            <li><b>Cek Pembimbing:</b> Cek berkala di akun FTI masing-masing setelah pengajuan judul divalidasi.</li>
+                            <li><b>Kunjungan Mitra:</b> Wajib meminta Surat Pengantar / Surat Tugas Resmi dari Prodi TI sebelum kunjungan ke lokasi mitra.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- VIEW 2: VERSI SINGKAT (EXECUTIVE) -->
+                <div id="view-singkat" style="display: none;">
+                    <div class="highlight-grid">
+                        <div class="highlight-item">
+                            <h4>Target Luaran</h4>
+                            <p>Wajib Produk IT + HKI</p>
+                        </div>
+                        <div class="highlight-item">
+                            <h4>Batas Upload Proposal</h4>
+                            <p>10 Oktober 2026</p>
+                        </div>
+                        <div class="highlight-item">
+                            <h4>Batas Upload Laporan</h4>
+                            <p>15 Desember 2026</p>
+                        </div>
+                        <div class="highlight-item">
+                            <h4>Awal Sertifikat</h4>
+                            <p>01 Februari 2027</p>
+                        </div>
+                    </div>
+
+                    <div class="card" style="--cat-color: var(--cat-aturan)">
+                        <div class="card-header">
+                            <span class="card-title">✅ Ringkasan Aturan Utama PKM</span>
+                        </div>
+                        <ul>
+                            <li><b>Fokus Utama:</b> Harus membuat karya/sistem IT (bukan mengajar/sosialisasi).</li>
+                            <li><b>Kata Awal Judul:</b> <i>Implementasi...</i>, <i>Perancangan...</i>, atau <i>Pengembangan...</i></li>
+                            <li><b>Syarat Mitra:</b> Punya Kop Surat resmi & Stempel Basah.</li>
+                            <li><b>Format Dokumen IA/LPKS:</b> TTD dan stempel Wajib Basah (Dilarang <i>crop</i> digital).</li>
+                            <li><b>Syarat Berita (Press Release):</b> Harus terbit di media massa <i>online</i> resmi.</li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="--cat-color: var(--cat-dokumen)">
+                        <div class="card-header">
+                            <span class="card-title">🔗 Link Akses Cepat</span>
+                        </div>
+                        <ul>
+                            <li><b>Portal Informasi PKM:</b> <a href="https://sites.google.com/unpam.ac.id/kemahasiswaan-ti/pkm-mahasiswa" target="_blank" style="color:var(--accent-blue);">sites.google.com/.../pkm-mahasiswa</a></li>
+                            <li><b>Grup WA Ketua PKM:</b> <a href="https://chat.whatsapp.com/IQkrElaUut10w0UKWMFvRk" target="_blank" style="color:var(--accent-blue);">chat.whatsapp.com/...</a></li>
+                            <li><b>Sistem Kerja Sama:</b> <a href="https://siskerma.unpam.ac.id" target="_blank" style="color:var(--accent-blue);">siskerma.unpam.ac.id</a></li>
+                            <li><b>Pendaftaran HKI:</b> <a href="https://hakcipta.dgip.go.id" target="_blank" style="color:var(--accent-blue);">hakcipta.dgip.go.id</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- YOUTUBE IFRAME API SCRIPT -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- SCRIPT UTAMA DASHBOARD -->
+    <script>
+        // ==========================================
+        // 1. INITIALIZATION YOUTUBE PLAYER API
+        // ==========================================
+        let ytPlayer;
+        const VIDEO_ID = 'ugcQfkfmm00';
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-player', {
+                videoId: VIDEO_ID,
+                playerVars: {
+                    'rel': 0,
+                    'modestbranding': 1,
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            document.getElementById('now-playing-text').textContent = 'Siap diputar. Pilih materi di kanan untuk melompat.';
+        }
+
+        // ==========================================
+        // 2. INTERACTIVE JUMP TO TIMESTAMP
+        // ==========================================
+        function seekTo(seconds, timestampLabel, title, btnElement) {
+            if (ytPlayer && typeof ytPlayer.seekTo === 'function') {
+                ytPlayer.seekTo(seconds, true);
+                ytPlayer.playVideo();
+                
+                // Update text status now playing
+                document.getElementById('now-playing-text').textContent = `Sedang Memutar: ${title} (${timestampLabel})`;
+            }
+
+            // Highlight Active Card
+            document.querySelectorAll('.card').forEach(card => card.classList.remove('active-playing'));
+            if (btnElement) {
+                const parentCard = btnElement.closest('.card');
+                if (parentCard) parentCard.classList.add('active-playing');
+            }
+
+            // Mobile view: auto scroll to video player
+            if (window.innerWidth <= 1024) {
+                document.querySelector('.video-section').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // ==========================================
+        // 3. TOGGLE VIEW (LENGKAP VS SINGKAT)
+        // ==========================================
+        function switchView(mode) {
+            const lengkapView = document.getElementById('view-lengkap');
+            const singkatView = document.getElementById('view-singkat');
+            const buttons = document.querySelectorAll('.toggle-btn');
+
+            if (mode === 'lengkap') {
+                lengkapView.style.display = 'block';
+                singkatView.style.display = 'none';
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+            } else {
+                lengkapView.style.display = 'none';
+                singkatView.style.display = 'block';
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+            }
+        }
+
+        // ==========================================
+        // 4. FILTER CATEGORY & SEARCH
+        // ==========================================
+        let selectedCategory = 'all';
+
+        function filterCategory(cat, element) {
+            selectedCategory = cat;
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            if (element) element.classList.add('active');
+            filterContent();
+        }
+
+        function filterContent() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#view-lengkap .card');
+
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                const cardCat = card.getAttribute('data-cat');
+
+                const matchesQuery = text.includes(query);
+                const matchesCategory = selectedCategory === 'all' || cardCat === selectedCategory;
+
+                if (matchesQuery && matchesCategory) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Keyboard Shortcut: Press '/' to focus search box
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+                e.preventDefault();
+                document.getElementById('searchInput').focus();
+            }
+        });
+    </script>
+</body>
+</html>
