@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Summarizer PKM UNPAM 2026/2027</title>
+    <title>Interactive Summarizer & Task Tracker PKM UNPAM 2026/2027</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -98,12 +98,6 @@
 
         .header-brand .title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
         .header-brand .subtitle { font-size: 0.75rem; color: var(--text-muted); }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
 
         .badge-tag {
             background: var(--accent-glow);
@@ -220,11 +214,11 @@
 
         .toggle-btn {
             flex: 1;
-            padding: 10px 16px;
+            padding: 10px 14px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 600;
             border-radius: 8px;
             cursor: pointer;
@@ -325,39 +319,7 @@
             margin-bottom: 12px;
         }
 
-        .card-title-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
         .card-title { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
-
-        /* Custom Checklist Checkbox */
-        .check-box {
-            width: 18px;
-            height: 18px;
-            border-radius: 5px;
-            border: 2px solid var(--text-muted);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .check-box.checked {
-            background-color: var(--accent-cyan);
-            border-color: var(--accent-cyan);
-        }
-
-        .check-box.checked::after {
-            content: "✓";
-            color: #000;
-            font-size: 0.75rem;
-            font-weight: 800;
-        }
 
         .timestamp-btn {
             background: var(--accent-glow);
@@ -409,22 +371,165 @@
         }
         .copy-btn:hover { background: var(--accent-blue); color: #fff; }
 
-        .highlight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        /* ==========================================================================
+           CHECKLIST TASK TRACKER DASHBOARD
+           ========================================================================== */
+        .progress-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-soft);
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
             gap: 12px;
-            margin-bottom: 12px;
         }
 
-        .highlight-item {
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .progress-stats {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .progress-bar-bg {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+            border-radius: 20px;
+            transition: width 0.4s ease;
+        }
+
+        .add-task-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .add-task-box input {
+            flex: 1;
+            padding: 10px 14px;
             background-color: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-soft);
-            padding: 14px;
-            border-radius: 12px;
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            outline: none;
         }
 
-        .highlight-item h4 { font-size: 0.7rem; color: var(--text-muted); margin-bottom: 4px; text-transform: uppercase; }
-        .highlight-item p { font-size: 0.95rem; font-weight: 700; color: var(--accent-cyan); }
+        .add-task-box input:focus { border-color: var(--accent-cyan); }
+
+        .btn-add-task {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            border: none;
+            color: #000;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 0 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-add-task:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .task-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.2s;
+        }
+
+        .task-item:hover { background: var(--bg-card-hover); }
+
+        .task-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .task-item.completed .task-checkbox {
+            background-color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        .task-item.completed .task-checkbox::after {
+            content: "✓";
+            color: #000;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .task-item.completed .task-text {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-text {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .task-tag {
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-soft);
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+
+        .btn-delete-task {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+            transition: color 0.2s;
+        }
+
+        .btn-delete-task:hover { color: var(--danger-text); }
 
         @media (max-width: 1024px) {
             .main-container { grid-template-columns: 1fr; padding: 16px; }
@@ -441,8 +546,8 @@
         <div class="header-brand">
             <div class="logo-icon">📌</div>
             <div>
-                <div class="title">Summarizer PKM TI UNPAM</div>
-                <div class="subtitle">Interactive Live Stream Summary & Timestamps</div>
+                <div class="title">Summarizer & Task Manager PKM TI</div>
+                <div class="subtitle">Interactive Live Stream Summary & Progress Tracker</div>
             </div>
         </div>
         <div class="header-right">
@@ -470,22 +575,23 @@
             </div>
         </div>
 
-        <!-- KOLOM KANAN: RANGKUMAN MATERI INTERAKTIF -->
+        <!-- KOLOM KANAN: RANGKUMAN MATERI INTERAKTIF & CHECKLIST -->
         <div class="summary-section">
             
             <!-- Filter & Controls Bar -->
             <div class="controls-bar">
                 <div class="view-toggler">
-                    <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Terperinci (14 Poin)</button>
-                    <button class="toggle-btn" onclick="switchView('singkat')">⚡ Versi Singkat (Executive)</button>
+                    <button class="toggle-btn active" onclick="switchView('lengkap')">📄 Versi Terperinci</button>
+                    <button class="toggle-btn" onclick="switchView('singkat')">⚡ Versi Singkat</button>
+                    <button class="toggle-btn" onclick="switchView('checklist')">✅ Checklist Tugas PKM</button>
                 </div>
 
-                <div class="search-box">
+                <div class="search-box" id="searchBoxContainer">
                     <span class="search-icon">🔍</span>
                     <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Cari materi, tanggal, dokumen MOA/IA, nama dosen..." autocomplete="off">
                 </div>
 
-                <div class="chip-row">
+                <div class="chip-row" id="chipCategoryRow">
                     <button class="chip active" onclick="filterCategory('all', this)">Semua</button>
                     <button class="chip" onclick="filterCategory('dasar', this)">Dasar PKM</button>
                     <button class="chip" onclick="filterCategory('syarat', this)">Syarat Tim</button>
@@ -501,16 +607,13 @@
             <!-- Content Area Scrollable -->
             <div class="content-scroll" id="contentArea">
                 
-                <!-- VIEW 1: VERSI TERPERINCI -->
+                <!-- VIEW 1: VERSI TERPERINCI (14 POIN) -->
                 <div id="view-lengkap">
                     
                     <!-- 1. APA ITU PKM -->
                     <div class="card" style="--cat-color: var(--cat-dasar)" data-cat="dasar">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
-                            </div>
+                            <span class="card-title">1. Apa itu PKM & Manfaat Utama</span>
                             <button class="timestamp-btn mono" onclick="seekTo(1536, '25:36', 'Apa itu PKM & Manfaat', this)">⏱️ 25:36</button>
                         </div>
                         <ul>
@@ -522,10 +625,7 @@
                     <!-- 2. SYARAT PESERTA -->
                     <div class="card" style="--cat-color: var(--cat-syarat)" data-cat="syarat">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
-                            </div>
+                            <span class="card-title">2. Syarat Peserta & Pembentukan Tim</span>
                             <button class="timestamp-btn mono" onclick="seekTo(1625, '27:05', 'Syarat Peserta & Tim', this)">⏱️ 27:05</button>
                         </div>
                         <ul>
@@ -537,10 +637,7 @@
                     <!-- 3. TIMELINE PELAKSANAAN -->
                     <div class="card" style="--cat-color: var(--cat-timeline)" data-cat="timeline">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
-                            </div>
+                            <span class="card-title">3. Timeline Pelaksanaan (Update Portal FTI)</span>
                             <button class="timestamp-btn mono" onclick="seekTo(1657, '27:37', 'Timeline Pelaksanaan PKM', this)">⏱️ 27:37</button>
                         </div>
                         <ul>
@@ -556,10 +653,7 @@
                     <!-- 4. ALUR 9 TAHAPAN FTI -->
                     <div class="card" style="--cat-color: var(--cat-alur)" data-cat="alur">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">4. Alur 9 Tahapan FTI</span>
-                            </div>
+                            <span class="card-title">4. Alur 9 Tahapan FTI</span>
                             <button class="timestamp-btn mono" onclick="seekTo(1797, '29:57', 'Alur 9 Tahapan FTI', this)">⏱️ 29:57</button>
                         </div>
                         <ul>
@@ -570,10 +664,7 @@
                     <!-- 5. TEMPLATE PROPOSAL & LAPORAN -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">5. Template Proposal & Laporan Akhir</span>
-                            </div>
+                            <span class="card-title">5. Template Proposal & Laporan Akhir</span>
                             <button class="timestamp-btn mono" onclick="seekTo(1992, '33:12', 'Template Proposal & Laporan', this)">⏱️ 33:12</button>
                         </div>
                         <ul>
@@ -586,10 +677,7 @@
                     <!-- 6. LUARAN HKI -->
                     <div class="card" style="--cat-color: var(--cat-dokumen)" data-cat="dokumen">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
-                            </div>
+                            <span class="card-title">6. Luaran HKI (Hak Kekayaan Intelektual)</span>
                             <button class="timestamp-btn mono" onclick="seekTo(2250, '37:30', 'Luaran HKI (Hak Cipta)', this)">⏱️ 37:30</button>
                         </div>
                         <ul>
@@ -602,10 +690,7 @@
                     <!-- 7. CATATAN PENTING PKM -->
                     <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
-                            </div>
+                            <span class="card-title">7. Catatan Penting Pelaksanaan PKM</span>
                             <button class="timestamp-btn mono" onclick="seekTo(2431, '40:31', 'Catatan Penting Pelaksanaan PKM', this)">⏱️ 40:31</button>
                         </div>
                         <ul>
@@ -615,17 +700,10 @@
                         </ul>
                     </div>
 
-                    <!-- =======================================================
-                         BREAKDOWN POIN 8: DOKUMEN KERJA SAMA (SISKERMA)
-                         ======================================================= -->
-
-                    <!-- 8.1 TIM & WILAYAH KERJA SAMA -->
+                    <!-- 8. TIM & WILAYAH KERJA SAMA -->
                     <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">8. Tim & Penentuan Wilayah Kerja Sama</span>
-                            </div>
+                            <span class="card-title">8. Tim & Penentuan Wilayah Kerja Sama</span>
                             <button class="timestamp-btn mono" onclick="seekTo(2612, '43:32', 'Tim & Wilayah Kerja Sama', this)">⏱️ 43:32</button>
                         </div>
                         <ul>
@@ -639,13 +717,10 @@
                         </ul>
                     </div>
 
-                    <!-- 8.2 HIERARKI & JENIS DOKUMEN -->
+                    <!-- 9. HIERARKI DOKUMEN -->
                     <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">9. Hierarki Dokumen (MOU, MOA, IA, LPKS)</span>
-                            </div>
+                            <span class="card-title">9. Hierarki Dokumen (MOU, MOA, IA, LPKS)</span>
                             <button class="timestamp-btn mono" onclick="seekTo(3124, '52:04', 'Hierarki Dokumen Kerja Sama', this)">⏱️ 52:04</button>
                         </div>
                         <ul>
@@ -656,13 +731,10 @@
                         </ul>
                     </div>
 
-                    <!-- 8.3 PROSEDUR PENGAJUAN MOA -->
+                    <!-- 10. PROSEDUR PENGAJUAN MOA -->
                     <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">10. Prosedur Pengajuan MOA (Awal Kegiatan)</span>
-                            </div>
+                            <span class="card-title">10. Prosedur Pengajuan MOA (Awal Kegiatan)</span>
                             <button class="timestamp-btn mono" onclick="seekTo(3287, '54:47', 'Prosedur Pengajuan MOA', this)">⏱️ 54:47</button>
                         </div>
                         <ul>
@@ -677,13 +749,10 @@
                         </ul>
                     </div>
 
-                    <!-- 8.4 PROSEDUR PENGAJUAN IA & LPKS -->
+                    <!-- 11. PROSEDUR IA & LPKS -->
                     <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">11. Prosedur IA & LPKS di Portal Siskerma</span>
-                            </div>
+                            <span class="card-title">11. Prosedur IA & LPKS di Portal Siskerma</span>
                             <button class="timestamp-btn mono" onclick="seekTo(3426, '57:06', 'Prosedur Pengajuan IA & LPKS', this)">⏱️ 57:06</button>
                         </div>
                         <ul>
@@ -692,13 +761,10 @@
                         </ul>
                     </div>
 
-                    <!-- 8.5 KODE WARNA TEMPLATE IA -->
+                    <!-- 12. KODE WARNA TEMPLATE IA -->
                     <div class="card" style="--cat-color: var(--cat-siskerma)" data-cat="siskerma">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">12. Aturan Kode Warna Teks Template IA</span>
-                            </div>
+                            <span class="card-title">12. Aturan Kode Warna Teks Template IA</span>
                             <button class="timestamp-btn mono" onclick="seekTo(3610, '01:00:10', 'Kode Warna Template IA', this)">⏱️ 01:00:10</button>
                         </div>
                         <ul>
@@ -715,13 +781,10 @@
                         </ul>
                     </div>
 
-                    <!-- 8.6 ATURAN STRICT & PRESS RELEASE -->
+                    <!-- 13. ATURAN STRICT & PRESS RELEASE -->
                     <div class="card" style="--cat-color: var(--cat-aturan)" data-cat="aturan">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">13. Aturan Strict Stempel & Press Release</span>
-                            </div>
+                            <span class="card-title">13. Aturan Strict Stempel & Press Release</span>
                             <button class="timestamp-btn mono" onclick="seekTo(3682, '01:01:22', 'Aturan Strict Stempel & Berita', this)">⏱️ 01:01:22</button>
                         </div>
                         <ul>
@@ -734,13 +797,10 @@
                         </div>
                     </div>
 
-                    <!-- 14. TANYA JAWAB POIN PENTING -->
+                    <!-- 14. FAQ -->
                     <div class="card" style="--cat-color: var(--cat-tanya)" data-cat="tanya">
                         <div class="card-header">
-                            <div class="card-title-group">
-                                <div class="check-box" onclick="toggleCheck(this)"></div>
-                                <span class="card-title">14. Tanya Jawab Poin Penting (FAQ)</span>
-                            </div>
+                            <span class="card-title">14. Tanya Jawab Poin Penting (FAQ)</span>
                             <button class="timestamp-btn mono" onclick="seekTo(4136, '01:08:56', 'Tanya Jawab Poin Penting', this)">⏱️ 01:08:56</button>
                         </div>
                         <ul>
@@ -753,29 +813,8 @@
 
                 <!-- VIEW 2: VERSI SINGKAT -->
                 <div id="view-singkat" style="display: none;">
-                    <div class="highlight-grid">
-                        <div class="highlight-item">
-                            <h4>Target Luaran</h4>
-                            <p>Wajib Produk IT + HKI</p>
-                        </div>
-                        <div class="highlight-item">
-                            <h4>Batas Upload Proposal</h4>
-                            <p>10 Oktober 2026</p>
-                        </div>
-                        <div class="highlight-item">
-                            <h4>Batas Upload Laporan</h4>
-                            <p>15 Desember 2026</p>
-                        </div>
-                        <div class="highlight-item">
-                            <h4>Awal Sertifikat</h4>
-                            <p>01 Februari 2027</p>
-                        </div>
-                    </div>
-
                     <div class="card" style="--cat-color: var(--cat-aturan)">
-                        <div class="card-header">
-                            <span class="card-title">✅ Ringkasan Aturan Utama PKM</span>
-                        </div>
+                        <div class="card-header"><span class="card-title">✅ Ringkasan Aturan Utama PKM</span></div>
                         <ul>
                             <li><b>Fokus Utama:</b> Harus membuat karya/sistem IT (bukan mengajar/sosialisasi).</li>
                             <li><b>Kata Awal Judul:</b> <i>Implementasi...</i>, <i>Perancangan...</i>, atau <i>Pengembangan...</i></li>
@@ -786,9 +825,7 @@
                     </div>
 
                     <div class="card" style="--cat-color: var(--cat-siskerma)">
-                        <div class="card-header">
-                            <span class="card-title">🔗 Link Akses Cepat</span>
-                        </div>
+                        <div class="card-header"><span class="card-title">🔗 Link Akses Cepat</span></div>
                         <ul>
                             <li><b>Portal Informasi PKM:</b> <a href="https://sites.google.com/unpam.ac.id/kemahasiswaan-ti/pkm-mahasiswa" target="_blank" style="color:var(--accent-cyan);">sites.google.com/.../pkm-mahasiswa</a></li>
                             <li><b>Grup WA Ketua PKM:</b> <a href="https://chat.whatsapp.com/IQkrElaUut10w0UKWMFvRk" target="_blank" style="color:var(--accent-cyan);">chat.whatsapp.com/...</a></li>
@@ -796,6 +833,31 @@
                             <li><b>Pendaftaran HKI:</b> <a href="https://hakcipta.dgip.go.id" target="_blank" style="color:var(--accent-cyan);">hakcipta.dgip.go.id</a></li>
                         </ul>
                     </div>
+                </div>
+
+                <!-- VIEW 3: CHECKLIST TUGAS PKM (TASK TRACKER) -->
+                <div id="view-checklist" style="display: none;">
+                    
+                    <!-- Progress Card Header -->
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <span class="progress-title">📊 Progress Keseluruhan PKM Kelompok</span>
+                            <span class="progress-stats mono" id="progressStatsText">0 / 0 Selesai (0%)</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progressBarFill"></div>
+                        </div>
+                    </div>
+
+                    <!-- Input Tambah Custom Task -->
+                    <div class="add-task-box">
+                        <input type="text" id="customTaskInput" placeholder="Tambah tugas internal kelompok baru... (tekan Enter)" onkeydown="if(event.key==='Enter') addCustomTask()">
+                        <button class="btn-add-task" onclick="addCustomTask()">+ Tambah</button>
+                    </div>
+
+                    <!-- List Tasks Container -->
+                    <div id="taskListContainer" style="display: flex; flex-direction: column; gap: 10px;"></div>
+
                 </div>
 
             </div>
@@ -812,14 +874,8 @@
         function onYouTubeIframeAPIReady() {
             ytPlayer = new YT.Player('youtube-player', {
                 videoId: VIDEO_ID,
-                playerVars: {
-                    'rel': 0,
-                    'modestbranding': 1,
-                    'playsinline': 1
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
+                playerVars: { 'rel': 0, 'modestbranding': 1, 'playsinline': 1 },
+                events: { 'onReady': onPlayerReady }
             });
         }
 
@@ -845,21 +901,41 @@
             }
         }
 
+        // ==========================================
+        // VIEW TOGGLER SYSTEM
+        // ==========================================
         function switchView(mode) {
             const lengkapView = document.getElementById('view-lengkap');
             const singkatView = document.getElementById('view-singkat');
+            const checklistView = document.getElementById('view-checklist');
+            const searchContainer = document.getElementById('searchBoxContainer');
+            const chipRow = document.getElementById('chipCategoryRow');
             const buttons = document.querySelectorAll('.toggle-btn');
+
+            buttons.forEach(b => b.classList.remove('active'));
 
             if (mode === 'lengkap') {
                 lengkapView.style.display = 'block';
                 singkatView.style.display = 'none';
+                checklistView.style.display = 'none';
+                searchContainer.style.display = 'block';
+                chipRow.style.display = 'flex';
                 buttons[0].classList.add('active');
-                buttons[1].classList.remove('active');
-            } else {
+            } else if (mode === 'singkat') {
                 lengkapView.style.display = 'none';
                 singkatView.style.display = 'block';
-                buttons[0].classList.remove('active');
+                checklistView.style.display = 'none';
+                searchContainer.style.display = 'block';
+                chipRow.style.display = 'flex';
                 buttons[1].classList.add('active');
+            } else if (mode === 'checklist') {
+                lengkapView.style.display = 'none';
+                singkatView.style.display = 'none';
+                checklistView.style.display = 'block';
+                searchContainer.style.display = 'none';
+                chipRow.style.display = 'none';
+                buttons[2].classList.add('active');
+                renderTaskList();
             }
         }
 
@@ -879,25 +955,113 @@
             cards.forEach(card => {
                 const text = card.textContent.toLowerCase();
                 const cardCat = card.getAttribute('data-cat');
-
                 const matchesQuery = text.includes(query);
                 const matchesCategory = selectedCategory === 'all' || cardCat === selectedCategory;
 
-                if (matchesQuery && matchesCategory) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = (matchesQuery && matchesCategory) ? 'block' : 'none';
             });
-        }
-
-        function toggleCheck(el) {
-            el.classList.toggle('checked');
         }
 
         function copyText(text) {
             navigator.clipboard.writeText(text);
             alert('Link disalin ke clipboard: ' + text);
+        }
+
+        // ==========================================
+        // TASK TRACKER ENGINE (WITH LOCALSTORAGE)
+        // ==========================================
+        const defaultTasks = [
+            { id: 1, text: "Pembentukan Kelompok & Pengajuan Judul di Portal FTI", tag: "16-30 Sep", done: false },
+            { id: 2, text: "Pengajuan MOA (2 Rangkap Materai 10.000) di s.id/siskerma", tag: "Awal PKM", done: false },
+            { id: 3, text: "Penyusunan & Upload Proposal PKM di Portal FTI", tag: "25 Sep-10 Okt", done: false },
+            { id: 4, text: "Minta Surat Tugas / Pengantar Kunjungan Mitra ke Prodi TI", tag: "Sebelum Visit", done: false },
+            { id: 5, text: "Validasi Proposal PKM oleh Dosen Pembimbing di FTI", tag: "Okt 2026", done: false },
+            { id: 6, text: "Pelaksanaan Kegiatan & Pembuatan Produk/Sistem IT di Mitra", tag: "Okt-Nov 2026", done: false },
+            { id: 7, text: "Pengajuan Nomor IA & LPKS di siskerma.unpam.ac.id", tag: "Selesai PKM", done: false },
+            { id: 8, text: "Penerbitan Press Release Berita di Media Online Resmi", tag: "LPKS", done: false },
+            { id: 9, text: "Pendaftaran HKI Hak Cipta Produk di hakcipta.dgip.go.id", tag: "Luaran", done: false },
+            { id: 10, text: "Penyusunan Laporan Akhir PKM (Format PDF Resmi)", tag: "Des 2026", done: false },
+            { id: 11, text: "Upload Laporan Akhir & Luaran (HKI + Link Berita) di FTI", tag: "01-15 Des", done: false },
+            { id: 12, text: "Lampirkan Screenshot Validasi IA Siskerma di Laporan", tag: "Syarat Wajib", done: false },
+            { id: 13, text: "Validasi Laporan Akhir oleh Pembimbing & Marcom FTI", tag: "01-25 Des", done: false },
+            { id: 14, text: "Download Sertifikat Resmi PKM di Portal FTI", tag: "01 Feb 2027", done: false }
+        ];
+
+        function getSavedTasks() {
+            const saved = localStorage.getItem('pkm_tasks_data');
+            if (saved) {
+                return JSON.parse(saved);
+            } else {
+                localStorage.setItem('pkm_tasks_data', JSON.stringify(defaultTasks));
+                return defaultTasks;
+            }
+        }
+
+        function saveTasks(tasks) {
+            localStorage.setItem('pkm_tasks_data', JSON.stringify(tasks));
+            renderTaskList();
+        }
+
+        function toggleTask(id) {
+            const tasks = getSavedTasks();
+            const updated = tasks.map(t => t.id === id ? { ...t, done: !t.done } : t);
+            saveTasks(updated);
+        }
+
+        function addCustomTask() {
+            const input = document.getElementById('customTaskInput');
+            const val = input.value.trim();
+            if (!val) return;
+
+            const tasks = getSavedTasks();
+            const newTask = {
+                id: Date.now(),
+                text: val,
+                tag: "Custom",
+                done: false
+            };
+            tasks.push(newTask);
+            saveTasks(tasks);
+            input.value = '';
+        }
+
+        function deleteTask(id) {
+            const tasks = getSavedTasks();
+            const filtered = tasks.filter(t => t.id !== id);
+            saveTasks(filtered);
+        }
+
+        function renderTaskList() {
+            const tasks = getSavedTasks();
+            const container = document.getElementById('taskListContainer');
+            if (!container) return;
+
+            container.innerHTML = '';
+            let completedCount = 0;
+
+            tasks.forEach(task => {
+                if (task.done) completedCount++;
+
+                const item = document.createElement('div');
+                item.className = `task-item ${task.done ? 'completed' : ''}`;
+                item.innerHTML = `
+                    <div class="task-left" onclick="toggleTask(${task.id})">
+                        <div class="task-checkbox"></div>
+                        <span class="task-text">${task.text}</span>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px;">
+                        <span class="task-tag mono">${task.tag}</span>
+                        ${task.tag === 'Custom' ? `<button class="btn-delete-task" onclick="deleteTask(${task.id})">✕</button>` : ''}
+                    </div>
+                `;
+                container.appendChild(item);
+            });
+
+            // Update Progress Stats
+            const total = tasks.length;
+            const percent = total === 0 ? 0 : Math.round((completedCount / total) * 100);
+            document.getElementById('progressStatsText').textContent = `${completedCount} / ${total} Selesai (${percent}%)`;
+            document.getElementById('progressBarFill').style.width = `${percent}%`;
         }
 
         document.addEventListener('keydown', (e) => {
